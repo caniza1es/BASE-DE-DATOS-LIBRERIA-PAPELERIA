@@ -1,7 +1,6 @@
 CREATE TABLE Branches(
 name varchar(25) PRIMARY KEY,
-address VARCHAR(25) NOT NULL,
-budget INTEGER DEFAULT 20000000 CHECK(budget > 0)
+address VARCHAR(25) NOT NULL
 );
 
 CREATE TABLE Occupations(
