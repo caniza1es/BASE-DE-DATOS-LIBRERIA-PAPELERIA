@@ -13,6 +13,7 @@ Apellidos = ['Gonzales','Rodriguez','Fernandez','Diaz','Perez','Gomez','Lucero',
 CC = []
 Branches = ['Sucursal Norte','Sucursal Sur']
 B_address = ['Las Cruces','Las equis']
+emplyees = []
 
 Occupations = ['Cajero','Administrador']
 O_salary = [1500000,2500000]
@@ -21,6 +22,7 @@ Products = ['Micropunta','Estilografo','Cartulina','Caja lapices','Libro','Caja 
 Precios = [3000,100000,500,2500,0,5000,3500,4000,700,600,4500,6000]
 pducts = []
 books = []
+receipts = []
 
 alpha = ['Bello','Solitario','Terrorifico','Infame','Criptico','Dulze','Inocente','Castaño','Verde','Sangriento','Rebelde','Don','Doctor']
 beta = ['anhelo','amor','psicopata','juego','odio','pasaje','interprete','navegador','mounstro','canibal','verso','aprendizaje','imbecil']
@@ -30,6 +32,7 @@ inventories = []
 
 aut = []
 edi = []
+cli = []
 
 def rO():
 	return random.choice(Occupations)
@@ -44,10 +47,10 @@ def rBr():
 	return random.choice(Branches)
 	
 def rMal(name):
-	return name + str(random.randint(0,10)) + random.choice(mail)
+	return name + str(random.randint(100,900)) + random.choice(mail)
 
-def rDt():#yyyy-mm-dd
-	yyyy = random.randint(1980,2022)
+def rDtb():#yyyy-mm-dd
+	yyyy = random.randint(1980,2005)
 	m = random.randint(0,1)
 	if m == 0:
 		mm = random.randint(1,9)
@@ -60,12 +63,42 @@ def rDt():#yyyy-mm-dd
 		dd = random.randint(1,9)
 	return '{0}-{1}{2}-{3}{4}'.format(yyyy,m,mm,d,dd)
 
+def rDtp():#yyyy-mm-dd
+	yyyy = random.randint(2010,2015)
+	m = random.randint(0,1)
+	if m == 0:
+		mm = random.randint(1,9)
+	else:
+		mm = random.randint(0,2)
+	d = random.randint(0,2)
+	if d == 2:
+		dd = random.randint(0,8)
+	else:
+		dd = random.randint(1,9)
+	return '{0}-{1}{2}-{3}{4}'.format(yyyy,m,mm,d,dd)
+
+def rDtpc():
+	yyyy = random.randint(2016,2022)
+	m = random.randint(0,1)
+	if m == 0:
+		mm = random.randint(1,9)
+	else:
+		mm = random.randint(0,2)
+	d = random.randint(0,2)
+	if d == 2:
+		dd = random.randint(0,8)
+	else:
+		dd = random.randint(1,9)
+	return '{0}-{1}{2}-{3}{4}'.format(yyyy,m,mm,d,dd)
+
+
 def newEmployee():
 		a = rN()
 		b = a.split()[0]
 		cc = rCC()
 		CC.append(cc)
-		m.write("INSERT INTO Employees(CC,NAME,branch,occupation,working_since,email)VALUES({0},'{1}','{2}','{3}','{4}','{5}');\n".format(cc,a,rBr(),rO(),rDt(),rMal(b)))
+		emplyees.append(cc)
+		m.write("INSERT INTO Employees(CC,NAME,branch,occupation,working_since,email)VALUES({0},'{1}','{2}','{3}','{4}','{5}');\n".format(cc,a,rBr(),rO(),rDtp(),rMal(b)))
 
 m = open("demo.txt","w")
 
@@ -130,7 +163,7 @@ for i in books:
 	title = random.choice(alpha) + " " + random.choice(beta)
 	editorial = random.choice(edi)
 	auto = random.choice(aut)
-	pub_date = rDt()
+	pub_date = rDtb()
 	genre = random.choice(generos)
 	m.write("INSERT INTO Books(ID,title,editorial,author,pub_date,genre)VALUES({0},'{1}',{2},{3},'{4}','{5}');\n".format(i,title,editorial,auto,pub_date,genre))
 for sucursal in Branches:
@@ -142,8 +175,38 @@ for sucursal in Branches:
 for i in range(20):
 	newEmployee()
 
-print("Success!")
-
+for i in range(500):
+	name = rN()
+	while True:
+		ccc = rCC()
+		if ccc not in CC:
+			break
+	cli.append(ccc)
+	phone = random.randint(500000000,599999999)
+	email = rMal(name.split()[0])
+	m.write("INSERT INTO Clients(CC,NAME,email,phone)VALUES({0},'{1}','{2}',{3});\n".format(ccc,name,email,phone))
 	
+for i in cli:
+	for n in range(random.randint(10,20)):
+		while True:
+			id = random.randint(3000000,3999999)
+			if id not in receipts:
+				break
+		receipts.append(id)
+		time = rDtpc()+' '+str(random.randint(1,18))+':'+ str(random.randint(0,59)) + ':' +str(random.randint(0,59))
+		client = random.choice(cli)
+		empl = random.choice(emplyees)
+		m.write("INSERT INTO Receipts(ID,TIME,client,employee)VALUES({0},'{1}',{2},{3});\n".format(id,time,client,empl))
 
+for i in receipts:
+	used = []
+	for n in range(random.randint(1,6)):
+		while True:
+			prod = random.choice(pducts)
+			if prod not in used:
+				break
+		used.append(prod)
+		amount = random.randint(1,3)
+		m.write("INSERT INTO Receipts_desc(ID,product,amount)VALUES({0},{1},{2});\n".format(i,prod,amount))
 
+print("Success!")
