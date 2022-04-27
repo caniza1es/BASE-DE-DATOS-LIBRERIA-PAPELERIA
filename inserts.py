@@ -108,6 +108,17 @@ for i in range(len(Branches)):
 for i in range(len(Occupations)):
 	m.write("INSERT INTO Occupations(description,salary)VALUES('{0}',{1});\n".format(Occupations[i],O_salary[i]));
 	
+for i in range(30):
+	while True:
+		id = random.randint(10,90)
+		if id not in edi:
+			break
+	i = ['tinta','escritos','trazo','libros']
+	name = random.choice(Apellidos) + " " + random.choice(i)
+	contacto = random.randint(600000000,690000000)
+	edi.append(id)
+	m.write("INSERT INTO Companies(ID,NAME,contacto)VALUES({0},'{1}',{2});\n".format(id,name,contacto))
+	
 for i in range(len(Products)):
 	if Products[i] == 'Libro':
 		for mmm in range(100):
@@ -121,7 +132,7 @@ for i in range(len(Products)):
 				price = bought + random.randint(10000,20000)
 				if price%100 == 0:
 					break
-			m.write("INSERT INTO Products(ID,des,price,price_bought)VALUES({0},'{1}',{2},{3});\n".format(id,des,price,bought));
+			m.write("INSERT INTO Products(ID,price,price_bought)VALUES({0},'{1}',{2});\n".format(id,price,bought));
 			pducts.append(id)
 			books.append(id)
 	else:
@@ -135,7 +146,8 @@ for i in range(len(Products)):
 			price = bought + random.randint(500,700)
 			if price%100 == 0:
 				break;
-		m.write("INSERT INTO Products(ID,des,price,price_bought)VALUES({0},'{1}',{2},{3});\n".format(id,des,price,bought));
+		m.write("INSERT INTO Products(ID,price,price_bought)VALUES({0},'{1}',{2});\n".format(id,price,bought));
+		m.write("INSERT INTO Stationers(ID,des,company)VALUES({0},'{1}',{2});\n".format(id,des,random.choice(edi)))
 		pducts.append(id)
 
 for i in range(60):
@@ -147,17 +159,6 @@ for i in range(60):
 	email = rMal(name.split()[1])
 	aut.append(id)
 	m.write("INSERT INTO Authors(ID,NAME,email)VALUES({0},'{1}','{2}');\n".format(id,name,email))
-
-for i in range(30):
-	while True:
-		id = random.randint(10,90)
-		if id not in edi:
-			break
-	i = ['tinta','escritos','trazo','libros']
-	name = random.choice(Apellidos) + " " + random.choice(i)
-	contacto = random.randint(600000000,690000000)
-	edi.append(id)
-	m.write("INSERT INTO Editorials(ID,NAME,contacto)VALUES({0},'{1}',{2});\n".format(id,name,contacto))
 
 for i in books:
 	title = random.choice(alpha) + " " + random.choice(beta)
@@ -209,4 +210,4 @@ for i in receipts:
 		amount = random.randint(1,3)
 		m.write("INSERT INTO Receipts_desc(ID,product,amount)VALUES({0},{1},{2});\n".format(i,prod,amount))
 
-print("Success!")
+print("Completado!")
