@@ -76,3 +76,7 @@ amount INTEGER NOT NULL CHECK(amount > 0),
 PRIMARY KEY(id,product)
 );
 
+CREATE OR REPLACE VIEW total_employees AS (
+	SELECT * FROM employees
+  	ORDER by branch
+);
