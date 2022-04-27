@@ -19,7 +19,6 @@ email VARCHAR(50)
 
 CREATE TABLE Products(
 ID INTEGER PRIMARY KEY,
-des varchar(30) NOT NULL,
 price INTEGER CHECK(price > price_bought),
 price_bought INTEGER CHECK(price_bought > 0)
 );	
@@ -37,16 +36,22 @@ name VARCHAR(50) NOT NULL,
 email TEXT NULL
 );
 
-CREATE TABLE Editorials(
+CREATE TABLE Companies(
 ID INTEGER PRIMARY KEY,
 NAME VARCHAR(50) NOT NULL,
 contacto INTEGER NOT NULL
 );
 
+CREATE TABLE Stationers(
+ID INTEGER pRIMARY KEY,
+des VARCHAR(40),
+company INTEGER REFERENCES Companies(id)
+);
+
 CREATE TABLE Books(
 id integer REFERENCES Products(ID),
 title VARCHAR(50) NOT NULL,
-editorial INTEGER REFERENCES Editorials(ID),
+editorial INTEGER REFERENCES Companies(ID),
 author INTEGER REFERENCES Authors(ID),
 pub_date DATE NOT NULL,
 genre VARCHAR(30) NOT NULL,
@@ -73,5 +78,3 @@ product INTEGER REFERENCES Products(Id),
 amount INTEGER NOT NULL CHECK(amount > 0),
 PRIMARY KEY(id,product)
 );
-
-
