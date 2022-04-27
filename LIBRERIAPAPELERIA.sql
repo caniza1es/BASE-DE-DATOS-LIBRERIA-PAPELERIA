@@ -27,7 +27,7 @@ price_bought INTEGER CHECK(price_bought > 0)
 CREATE TABLE Inventories(
 branch VARCHAR(25) REFERENCES Branches(name),
 product INTEGER REFERENCES Products(ID),
-amount INTEGER CHECK(amount > 0) DEFAULT 0,
+amount INTEGER CHECK(amount >= 0) DEFAULT 0,
 PRIMARY KEY(branch,product)
 );
 
