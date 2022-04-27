@@ -64,9 +64,7 @@ CREATE TABLE Receipts(
 ID INTEGER PRIMARY KEY,
 time TIMESTAMP NOT NULL,
 client INTEGER REFERENCES Clients(CC) NOT NULL,
-employee INTEGER REFERENCES employees(CC) NOT NULL,
-branch varchar(25) REFERENCES Branches(name)
-ON DELETE CASCADE
+employee INTEGER REFERENCES employees(CC) NOT NULL
 );
 
 CREATE TABLE Receipts_desc(
