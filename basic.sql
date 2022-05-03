@@ -19,6 +19,7 @@ AND I.product = P.id
 GROUP BY S.id,S.des,S.company
 );
 
+CREATE OR REPLACE VIEW nor_employees AS (
 WITH RECURSIVE branch_employees AS (
     SELECT
         cc,
@@ -40,4 +41,6 @@ WITH RECURSIVE branch_employees AS (
         FROM
             employees e
         INNER JOIN branch_employees s ON s.cc = e.cc
+)
+SELECT * FROM branch_employees
 );
