@@ -39,6 +39,16 @@ SELECT M.id, M.sold,
   FROM products_sold AS M
 );
 
+CREATE OR REPLACE VIEW msold_book AS(
+	SELECT B.id,B.title,A.name,M.sold,
+  	RANK () OVER ( 
+		ORDER BY M.sold DESC
+	) sold_rank 
+  	FROM books as B, msold_product as M,authors as A
+  	WHERE B.id = M.id
+  	and A.id = B.author
+);
+
 CREATE OR REPLACE VIEW nor_employees AS (
 WITH RECURSIVE branch_employees AS (
     SELECT
@@ -64,3 +74,4 @@ WITH RECURSIVE branch_employees AS (
 )
 SELECT * FROM branch_employees
 );
+
