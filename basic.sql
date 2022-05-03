@@ -3,6 +3,11 @@ SELECT * FROM employees
 ORDER by branch
 );
 
+CREATE OR REPLACE VIEW total_clients AS (
+SELECT * FROM clients
+ORDER BY name ASC
+);
+
 CREATE OR REPLACE VIEW total_books AS (
 SELECT B.id,B.title, B.editorial,B.author,B.genre,SUM(I.amount) as total
 FROM books as B, products as P, inventories as I
