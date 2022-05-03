@@ -18,3 +18,26 @@ WHERE S.id = P.id
 AND I.product = P.id
 GROUP BY S.id,S.des,S.company
 );
+
+WITH RECURSIVE branch_employees AS (
+    SELECT
+        cc,
+        name,
+        occupation,
+        working_since,
+  		email
+    FROM
+        employees
+    WHERE
+        employees.branch = 'Sucursal Norte'
+    UNION
+        SELECT
+            e.cc,
+            e.name,
+            e.occupation,
+  			e.working_since,
+  			e.email
+        FROM
+            employees e
+        INNER JOIN branch_employees s ON s.cc = e.cc
+);
