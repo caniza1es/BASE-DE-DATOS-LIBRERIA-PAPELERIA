@@ -24,6 +24,21 @@ AND I.product = P.id
 GROUP BY S.id,S.des,S.company
 );
 
+CREATE OR REPLACE VIEW products_sold AS(
+SELECT P.id, COUNT(P.id) AS sold
+FROM products as P,receipts_desc as R
+WHERE R.product = P.id
+GROUP BY P.id
+);
+
+CREATE OR REPLACE VIEW msold_product AS(
+SELECT M.id, M.sold, 
+  RANK () OVER ( 
+		ORDER BY M.sold DESC
+	) sold_rank
+  FROM products_sold AS M
+);
+
 CREATE OR REPLACE VIEW nor_employees AS (
 WITH RECURSIVE branch_employees AS (
     SELECT
