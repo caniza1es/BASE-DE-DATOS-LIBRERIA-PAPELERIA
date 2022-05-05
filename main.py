@@ -1,52 +1,88 @@
 import psycopg2
-import sys
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QWidget, QLabel, QLineEdit
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtCore import QSize    
 
-conns = []
+def total_employees():
+    return """
+    SELECT * FROM employees
+    ORDER by branch"""
 
-class textInput(QMainWindow):
-    def __init__(self):
-        QMainWindow.__init__(self)
+def total_clients():
+    return """
+    SELECT * FROM clients
+    ORDER BY name ASC"""
 
-        self.setMinimumSize(QSize(320, 140))    
-        self.setWindowTitle("Libreria Papeleria") 
+def total_books():
+    return """
+    SELECT B.id,B.title, B.editorial,B.author,B.genre,SUM(I.amount) as total
+    FROM books as B, products as P, inventories as I
+    WHERE B.id = p.id
+    AND I.product = P.id
+    GROUP BY B.id,B.title,B.editorial,B.author,B.genre
+    """
 
-        self.nameLabel = QLabel(self)
-        self.nameLabel.setText('contraseña:')
-        self.line = QLineEdit(self)
+def total_stationers():
+    return """
+    SELECT S.id, S.des, S.company, SUM(I.amount) AS total
+    FROM stationers as S, products as P, inventories as I
+    WHERE S.id = P.id
+    AND I.product = P.id
+    GROUP BY S.id,S.des,S.company
+    """
+def products_sold():
+    return """
+    SELECT P.id, COUNT(P.id) AS sold
+    FROM products as P,receipts_desc as R
+    WHERE R.product = P.id
+    GROUP BY P.id
+    """
+def msold_product(limit = 0):
+    query = """
+    SELECT M.id, M.sold, RANK () OVER ( 
+		ORDER BY M.sold DESC
+	)sold_rank
+    FROM ({0}) AS M
+    """.format(products_sold())
+    if not limit:
+        return query
+    else:
+        return query + " LIMIT {0}".format(limit)
+    
+def msold_book(limit = 0):
+    query = """	
+    SELECT B.id,B.title,A.name,M.sold,
+  	RANK () OVER ( 
+		ORDER BY M.sold DESC
+	) sold_rank 
+  	FROM books as B, ({0}) as M,authors as A
+  	WHERE B.id = M.id and A.id = B.author
+    """.format(msold_product())
+    if not limit:
+        return query
+    else:
+        return query + " LIMIT {0}".format(limit)
 
-        self.line.move(80, 20)
-        self.line.resize(200, 32)
-        self.nameLabel.move(20, 20)
-
-        pybutton = QPushButton('OK', self)
-        pybutton.clicked.connect(self.clickMethod)
-        pybutton.resize(200,32)
-        pybutton.move(80, 60)        
-
-    def clickMethod(self):
-        ps = self.line.text()
-        cn = Connection(ps)
-        if not cn:
-            print("contraseña incorrecta")
-        else:
-            conns.append(cn)
-            self.close()
-
-
+def branch_employees(branch):
+    return """
+    SELECT * FROM employees
+    WHERE employees.branch = '{0}'
+    """.format(branch)
+    
 def Connection(ps):
     try:
         return psycopg2.connect(database="Libreria_Papeleria",user='postgres',password=ps,host='127.0.0.1',port='5432')
     except:
         return 0
         
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    mainWin = textInput()
-    mainWin.show()
-    print("ew")
-    sys.exit( app.exec_() )
+def main():
+    while True:
+        ps = input("contraseña: ")
+        conn = Connection(ps)
+        if conn != 0:
+            break
+    cursor = conn.cursor()
+    cursor.execute(total_employees())
+    m = cursor.fetchall()
+    for i in m:
+        print(i)
+
+main()
     
