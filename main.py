@@ -65,6 +65,13 @@ def branch_employees(branch):
     SELECT * FROM employees
     WHERE employees.branch = '{0}'
     """.format(branch)
+
+def receipt_detail(id):
+    return"""
+      SELECT * FROM receipts_desc,products
+      WHERE receipts_desc.id = {0}
+      AND receipts_desc.product = products.id
+    """.format(id)
     
 def Connection(ps):
     try:
