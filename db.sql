@@ -88,3 +88,10 @@ month SMALLINT,
 DAY SMALLINT,
 PRIMARY KEY(rd_id)
 );
+
+SELECT R.id,rd.idd,e.branch,p.price,EXTRACT(year FROM R.time),EXTRACT(MONTH FROM R.time),EXTRACT(DAY FROM R.time)
+from receipts_desc as rd,employees as e,receipts as R,products as P
+WHERE rd.idd = iddd
+AND rd.id = R.id
+AND R.employee = e.cc
+AND rd.product = P.id
