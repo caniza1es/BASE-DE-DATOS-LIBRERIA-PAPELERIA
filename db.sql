@@ -89,12 +89,21 @@ DAY SMALLINT,
 PRIMARY KEY(rd_id)
 );
 
-SELECT R.id,rd.idd,e.branch,p.price,EXTRACT(year FROM R.time),EXTRACT(MONTH FROM R.time),EXTRACT(DAY FROM R.time)
+CREATE OR REPLACE PROCEDURE insert_remove(iddd INTEGER)
+LANGUAGE 'plpgsql'
+AS $$
+BEGIN
+INSERT INTO ingresos(r_id,rd_id,branch,year,month,day)
+	SELECT R.id,rd.idd,e.branch,p.price,EXTRACT(year FROM R.time),EXTRACT(MONTH FROM R.time),EXTRACT(DAY FROM R.time)
     from receipts_desc as rd,employees as e,receipts as R,products as P
     WHERE rd.idd = iddd
     anD rd.id = R.id
     AND R.employee = e.cc
-    AND rd.product = P.id
+    AND rd.product = P.id;
 UPDATE inventories
 set amount = amount - (SELECT SUM(receipts_desc.amount) FROM receipts_desc WHERE receipts_desc.idd = iddd)
-WHERE product = (SELECT receipts_desc.product FROM receipts_desc WHERE receipts_desc.idd=iddd)
+WHERE product = (SELECT receipts_desc.product FROM receipts_desc WHERE receipts_desc.idd=iddd);
+COMMIT;
+END;
+$$
+
