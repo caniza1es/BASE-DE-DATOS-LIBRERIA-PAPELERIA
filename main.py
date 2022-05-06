@@ -1,5 +1,20 @@
 import psycopg2
 
+books = []
+stationers = []
+
+def books_id():
+    return """
+    SELECT books.id
+    from books
+    """
+    
+def stationers_id():
+    return """
+    SELECT stationers.id
+    from stationers
+    """
+
 def total_employees():
     return """
     SELECT * FROM employees
@@ -72,24 +87,43 @@ def receipt_detail(id):
       WHERE receipts_desc.id = {0}
       AND receipts_desc.product = products.id
     """.format(id)
-    
+
+def product_desc(id):
+    table = "Books" if id in books else "Stattioners"
+    return """SELECT * FROM {0}
+              WHERE {0}.id = {1}""".format(table,id)
+
 def Connection(ps):
     try:
-        return psycopg2.connect(database="Libreria_Papeleria",user='postgres',password=ps,host='127.0.0.1',port='5432')
+        return psycopg2.connect(database="LIBRERIAPAPELERIA",user='postgres',password=ps,host='127.0.0.1',port='5432')
     except:
         return 0
         
+def defineProducts(conn):
+    cursor = conn.cursor()
+    cursor.execute(books_id())
+    m = cursor.fetchall()
+    for i in m:
+        books.append(i[0])
+    cursor.execute(stationers_id())
+    m = cursor.fetchall()
+    for i in m:
+        stationers.append(i[0])
+
 def main():
     while True:
         ps = input("contraseña: ")
         conn = Connection(ps)
         if conn != 0:
             break
+    defineProducts(conn)
     cursor = conn.cursor()
-    cursor.execute(total_employees())
+    cursor.execute(product_desc(6977))
     m = cursor.fetchall()
     for i in m:
         print(i)
 
+
 main()
+    
     
