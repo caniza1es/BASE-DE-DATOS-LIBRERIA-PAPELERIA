@@ -73,8 +73,18 @@ employee INTEGER REFERENCES employees(CC) NOT NULL
 );
 
 CREATE TABLE Receipts_desc(
+IDD serial,
 ID INTEGER REFERENCES Receipts(ID),
 product INTEGER REFERENCES Products(Id),
 amount INTEGER NOT NULL CHECK(amount > 0),
-PRIMARY KEY(id,product)
+PRIMARY KEY(IDD)
+);
+
+CREATE TABLE Ingresos(
+rd_id INTEGER REFERENCES receipts_desc(IDD),
+branch varchar(25) REFERENCES Branches(NAME),
+year smallint,
+month SMALLINT,
+DAY SMALLINT,
+PRIMARY KEY(rd_id)
 );
