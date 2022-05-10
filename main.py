@@ -89,7 +89,7 @@ def receipt_detail(id):
     """.format(id)
 
 def product_desc(id):
-    table = "Books" if id in books else "Stattioners"
+    table = "Books" if id in books else "Stationers"
     return """SELECT * FROM {0}
               WHERE {0}.id = {1}""".format(table,id)
 
