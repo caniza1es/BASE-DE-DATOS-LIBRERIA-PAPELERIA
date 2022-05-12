@@ -133,6 +133,7 @@ def product_desc(id):
 def generarFactura(con,client,employee):
     from datetime import datetime
     from random import randint
+    from random import choice
     im = randint(4000,8000)
     a = datetime.now()
     quer = """INSERT INTO receipts(id,time,client,employee) VALUES({0},'{1}',{2},{3});""".format(im,a,client,employee)
@@ -145,9 +146,12 @@ def generarFactura(con,client,employee):
         am = int(input("cantidad: "))
         quer += """INSERT INTO receipts_desc(id,product,amount) VALUES({0},{1},{2});""".format(im,p,am)
     cursor = con.cursor()
+    cursor.execute(quer)
+    con.commit()
     cursor.execute("""select M.idd from ({0}) as M""".format(receipt_detail(im)))
     m = cursor.fetchall()
     for i in m:
-        print(i)
-        quer += """CALL insert_remove(i);"""
+        print("""CALL insert_remove({0});""".format(choice(i)))
+        cursor.execute("""CALL insert_remove({0})""".format(choice(i)))
+        con.commit()
     return quer,im
