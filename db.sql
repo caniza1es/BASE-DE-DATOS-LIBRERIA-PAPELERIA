@@ -109,3 +109,7 @@ COMMIT;
 END;
 $$
 
+CALL insert_remove(12);
+
+SELECT inventories.amount FROM inventories
+where inventories.product = 7004;
