@@ -8,8 +8,8 @@ import string
 
 
 mail = ['@gmail.com','@hotmail.com','@yahoo.com']
-Nombres = ['Hugo','Martin','Lucas','Mateo','Leo','Daniel','Alejandro','Pablo','Juan','Lucia','Sofia','Martina','Julia','Paula','Valeria','Emma']
-Apellidos = ['Gonzales','Rodriguez','Fernandez','Diaz','Perez','Gomez','Lucero','Sosa','Quiroga','Martinez','Muñoz','Soto','Mokou','Melano','Silva']
+Nombres = ['Hugo','Martin','Lucas','Mateo','Leo','Daniel','Alejandro','Pablo','Juan','Lucia','Sofia','Martina','Julia','Paula','Valeria','Emma','Rosa','Piedad','Maria','Hernan','Zoraida','Martha','Bruno','Diego','Pedro','Edgar','Trevor','Ernesto','Edwin','Ayleen']
+Apellidos = ['Gonzales','Rodriguez','Fernandez','Diaz','Perez','Gomez','Lucero','Sosa','Quiroga','Martinez','Muñoz','Soto','Mokou','Melano','Silva','Henao','Smith','Beltran','Barbosa','Herrera','Lamy','Castro','Cubides','Belmont','Montenegro','Russy','Polo','Villamor']
 CC = []
 Branches = ['Sucursal Norte','Sucursal Sur']
 B_address = ['Las Cruces','Las equis']
