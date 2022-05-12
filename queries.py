@@ -135,8 +135,7 @@ def generarFactura(con,client,employee):
     from random import randint
     im = randint(4000,8000)
     a = datetime.now()
-    count = 1
-    quer = "INSERT INTO receipts(id,time,client,employee) VALUES({0},{1},{2},{3});".format(im,a,client,employee)
+    quer = """INSERT INTO receipts(id,time,client,employee) VALUES({0},'{1}',{2},{3});""".format(im,a,client,employee)
     print("factura ",im)
     while True:
         p = input("producto: ")
@@ -144,22 +143,11 @@ def generarFactura(con,client,employee):
             break
         p = int(p)
         am = int(input("cantidad: "))
-        quer += "INSERT INTO receipts_desc(id,product,amount) VALUES({0},{1},{2});".format(im,p,am)
+        quer += """INSERT INTO receipts_desc(id,product,amount) VALUES({0},{1},{2});""".format(im,p,am)
     cursor = con.cursor()
-    cursor.execute("select M.idd from ({0}) as M".format(receipt_detail))
+    cursor.execute("""select M.idd from ({0}) as M""".format(receipt_detail(im)))
     m = cursor.fetchall()
     for i in m:
-        quer+="""
-        BEGIN
-        INSERT INTO ingresos(r_id,rd_id,branch,year,month,day)
-        SELECT R.id,rd.idd,e.branch,p.price,EXTRACT(year FROM R.time),EXTRACT(MONTH FROM R.time),EXTRACT(DAY FROM R.time)
-        from receipts_desc as rd,employees as e,receipts as R,products as P
-        WHERE rd.idd = iddd
-        anD rd.id = R.id
-        AND R.employee = e.cc
-        AND rd.product = P.id;
-        UPDATE inventories
-        set amount = amount - (SELECT SUM(receipts_desc.amount) FROM receipts_desc WHERE receipts_desc.idd = iddd)
-        WHERE product = (SELECT receipts_desc.product FROM receipts_desc WHERE receipts_desc.idd=iddd);
-        COMMIT;"""
-    return im
+        print(i)
+        quer += """CALL insert_remove(i);"""
+    return quer,im

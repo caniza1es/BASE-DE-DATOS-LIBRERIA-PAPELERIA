@@ -81,19 +81,21 @@ PRIMARY KEY(IDD)
 );
 
 CREATE TABLE Ingresos(
+r_id INTEGER REFERENCES receipts(id),
 rd_id INTEGER REFERENCES receipts_desc(IDD),
 branch varchar(25) REFERENCES Branches(NAME),
+sold_price INTEGER,
 year smallint,
 month SMALLINT,
 DAY SMALLINT,
-PRIMARY KEY(rd_id)
+PRIMARY KEY(r_id,rd_id)
 );
 
 CREATE OR REPLACE PROCEDURE insert_remove(iddd INTEGER)
 LANGUAGE 'plpgsql'
 AS $$
 BEGIN
-INSERT INTO ingresos(r_id,rd_id,branch,year,month,day)
+INSERT INTO ingresos(r_id,rd_id,branch,sold_price,year,month,day)
 	SELECT R.id,rd.idd,e.branch,p.price,EXTRACT(year FROM R.time),EXTRACT(MONTH FROM R.time),EXTRACT(DAY FROM R.time)
     from receipts_desc as rd,employees as e,receipts as R,products as P
     WHERE rd.idd = iddd
