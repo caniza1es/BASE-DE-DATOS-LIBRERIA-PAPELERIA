@@ -99,7 +99,7 @@ INSERT INTO ingresos(r_id,rd_id,branch,sold_price,year,month,day)
 	SELECT R.id,rd.idd,e.branch,p.price,EXTRACT(year FROM R.time),EXTRACT(MONTH FROM R.time),EXTRACT(DAY FROM R.time)
     from receipts_desc as rd,employees as e,receipts as R,products as P
     WHERE rd.idd = iddd
-    anD rd.id = R.id
+    AND rd.id = R.id
     AND R.employee = e.cc
     AND rd.product = P.id;
 UPDATE inventories
@@ -107,9 +107,50 @@ set amount = amount - (SELECT SUM(receipts_desc.amount) FROM receipts_desc WHERE
 WHERE product = (SELECT receipts_desc.product FROM receipts_desc WHERE receipts_desc.idd=iddd);
 COMMIT;
 END;
-$$
+$$;
+
+CREATE ROLE caja
+LOGIN
+PASSWORD '123'
+CONNECTION LIMIT 1000;
+
+CREATE ROLE caja_administrador
+LOGIN
+PASSWORD '123'
+CONNECTION LIMIT 1000;
+
+CREATE ROLE administrador_sucursal
+LOGIN
+PASSWORD '123'
+CONNECTION LIMIT 1000;
+
+GRANT SELECT,INSERT
+ON receipts,receipts_desc
+TO caja;
+
+GRANT SELECT
+ON Stationers,Books,inventories
+TO caja;
+
+GRANT SELECT,INSERT,DELETE
+ON receipts,receipts_desc
+TO caja_administrador;
+
+GRANT SELECT
+ON Stationers,Books,inventories
+TO caja_administrador;
+
+GRANT SELECT
+ON ALL TABLES
+in schema "public"
+TO administrador_sucursal;
+
+GRANT INSERT,UPDATE,DELETE
+ON Products,inventories,Books,Stationers
+TO administrador_sucursal;
 
 CALL insert_remove(12);
 
 SELECT inventories.amount FROM inventories
 where inventories.product = 7004;
+
