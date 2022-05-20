@@ -150,8 +150,10 @@ def generarFactura(con,client,employee):
     con.commit()
     cursor.execute("""select M.idd from ({0}) as M""".format(receipt_detail(im)))
     m = cursor.fetchall()
+    print(m)
     for i in m:
-        print("""CALL insert_remove({0});""".format(choice(i)))
-        cursor.execute("""CALL insert_remove({0})""".format(choice(i)))
-        con.commit()
+        i = choice(i)
+        print(type(i))
+        a = """CALL insert_remove({0});""".format(i)
+        cursor.execute(a)
     return quer,im

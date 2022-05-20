@@ -1,101 +1,16 @@
+from queries import *
+from IPython.display import display
+from sqlalchemy import create_engine
+import pandas as pd
+import pandas.io.sql as sqlio
 import psycopg2
 
 books = []
 stationers = []
 
-def books_id():
-    return """
-    SELECT books.id
-    from books
-    """
-    
-def stationers_id():
-    return """
-    SELECT stationers.id
-    from stationers
-    """
-
-def total_employees():
-    return """
-    SELECT * FROM employees
-    ORDER by branch"""
-
-def total_clients():
-    return """
-    SELECT * FROM clients
-    ORDER BY name ASC"""
-
-def total_books():
-    return """
-    SELECT B.id,B.title, B.editorial,B.author,B.genre,SUM(I.amount) as total
-    FROM books as B, products as P, inventories as I
-    WHERE B.id = p.id
-    AND I.product = P.id
-    GROUP BY B.id,B.title,B.editorial,B.author,B.genre
-    """
-
-def total_stationers():
-    return """
-    SELECT S.id, S.des, S.company, SUM(I.amount) AS total
-    FROM stationers as S, products as P, inventories as I
-    WHERE S.id = P.id
-    AND I.product = P.id
-    GROUP BY S.id,S.des,S.company
-    """
-def products_sold():
-    return """
-    SELECT P.id, COUNT(P.id) AS sold
-    FROM products as P,receipts_desc as R
-    WHERE R.product = P.id
-    GROUP BY P.id
-    """
-def msold_product(limit = 0):
-    query = """
-    SELECT M.id, M.sold, RANK () OVER ( 
-		ORDER BY M.sold DESC
-	)sold_rank
-    FROM ({0}) AS M
-    """.format(products_sold())
-    if not limit:
-        return query
-    else:
-        return query + " LIMIT {0}".format(limit)
-    
-def msold_book(limit = 0):
-    query = """	
-    SELECT B.id,B.title,A.name,M.sold,
-  	RANK () OVER ( 
-		ORDER BY M.sold DESC
-	) sold_rank 
-  	FROM books as B, ({0}) as M,authors as A
-  	WHERE B.id = M.id and A.id = B.author
-    """.format(msold_product())
-    if not limit:
-        return query
-    else:
-        return query + " LIMIT {0}".format(limit)
-
-def branch_employees(branch):
-    return """
-    SELECT * FROM employees
-    WHERE employees.branch = '{0}'
-    """.format(branch)
-
-def receipt_detail(id):
-    return"""
-      SELECT * FROM receipts_desc,products
-      WHERE receipts_desc.id = {0}
-      AND receipts_desc.product = products.id
-    """.format(id)
-
-def product_desc(id):
-    table = "Books" if id in books else "Stationers"
-    return """SELECT * FROM {0}
-              WHERE {0}.id = {1}""".format(table,id)
-
-def Connection(ps):
+def Connection(us,ps):
     try:
-        return psycopg2.connect(database="LIBRERIAPAPELERIA",user='postgres',password=ps,host='127.0.0.1',port='5432')
+        return psycopg2.connect(database="LIBRERIAPAPELERIA",user=us,password=ps,host='127.0.0.1',port='5432'),create_engine('postgresql+psycopg2://{0}:{1}@localhost/LIBRERIAPAPELERIA'.format(us,ps))
     except:
         return 0
         
@@ -110,18 +25,36 @@ def defineProducts(conn):
     for i in m:
         stationers.append(i[0])
 
+def switch(usr,engine,psy):
+    if usr == "caja":
+        data = sqlio.read_sql_query(total_books(), engine)
+        print("--------LIBROS---------")
+        with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
+            display(data) 
+        print("--------ESTACIONARIOS---------")
+        data = sqlio.read_sql_query(total_stationers(), engine)
+        with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
+            display(data) 
+        print("1.Generar Factura")
+        while True:
+            a = input(">")
+            if a == "exit":
+                break
+            elif a == '1':
+                generarFactura(psy,int(input("cliente: ")),int(input("empleado: ")))
+    
+
+
 def main():
     while True:
-        ps = input("contraseña: ")
-        conn = Connection(ps)
-        if conn != 0:
+        usr = input("usuario: ")
+        psy = input("contraseña: ")
+        conpsy,conalch = Connection(usr,psy)
+        if conpsy != 0:
             break
-    defineProducts(conn)
-    cursor = conn.cursor()
-    cursor.execute(product_desc(6977))
-    m = cursor.fetchall()
-    for i in m:
-        print(i)
+    defineProducts(conpsy)
+    switch(usr,conalch,conpsy)
+
 
 
 main()
