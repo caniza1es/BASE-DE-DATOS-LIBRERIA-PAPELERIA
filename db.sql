@@ -105,7 +105,6 @@ INSERT INTO ingresos(r_id,rd_id,branch,sold_price,year,month,day)
 UPDATE inventories
 set amount = amount - (SELECT SUM(receipts_desc.amount) FROM receipts_desc WHERE receipts_desc.idd = iddd)
 WHERE product = (SELECT receipts_desc.product FROM receipts_desc WHERE receipts_desc.idd=iddd);
-COMMIT;
 END;
 $$;
 
@@ -129,8 +128,10 @@ ON receipts,receipts_desc
 TO caja;
 
 GRANT SELECT
-ON Stationers,Books,inventories
+ON Stationers,Books,inventories,Products
 TO caja;
+
+GRANT ALL ON PROCEDURE insert_remove TO caja;
 
 GRANT SELECT,INSERT,DELETE
 ON receipts,receipts_desc
@@ -149,8 +150,4 @@ GRANT INSERT,UPDATE,DELETE
 ON Products,inventories,Books,Stationers
 TO administrador_sucursal;
 
-CALL insert_remove(12);
-
-SELECT inventories.amount FROM inventories
-where inventories.product = 7004;
 
