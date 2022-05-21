@@ -105,6 +105,9 @@ def switch(usr,engine,psy):
                 dat = sqlio.read_sql_query(msold_book(5),engine)
                 dat['quantity'].plot(kind="bar")
                 display(dat)
+                filepath = 'consultas.html'
+                import os
+                os.startfile(filepath)
 
 def main():
     while True:
