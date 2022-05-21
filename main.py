@@ -82,6 +82,8 @@ def switch(usr,engine,psy):
             print("2.Agregar Empleado")
             print("3.Agregar Producto")
             print("4.Asignar Producto")
+            print("5.Agregar Autor")
+            print("6.Agregar Compania")
             a = input(">")
             if a == "exit":
                 break
@@ -93,6 +95,10 @@ def switch(usr,engine,psy):
                 agregarProducto(psy)
             elif a == '4':
                 asignarProducto(psy)
+            elif a == '5':
+                agregarAutor(psy)
+            elif a == '6':
+                agregarCompania(psy)
 
 def main():
     while True:
