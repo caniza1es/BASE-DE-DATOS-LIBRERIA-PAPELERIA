@@ -124,21 +124,25 @@ PASSWORD '123'
 CONNECTION LIMIT 1000;
 
 GRANT SELECT,INSERT
-ON receipts,receipts_desc
+ON receipts,receipts_desc,Clients
 TO caja;
 
 GRANT SELECT
 ON Stationers,Books,inventories,Products
 TO caja;
 
+GRANT UPDATE
+ON inventories
+TO caja;
+
 GRANT ALL ON PROCEDURE insert_remove TO caja;
 
 GRANT SELECT,INSERT,DELETE
-ON receipts,receipts_desc
+ON receipts,receipts_desc,Clients
 TO caja_administrador;
 
 GRANT SELECT
-ON Stationers,Books,inventories
+ON Stationers,Books,inventories,products
 TO caja_administrador;
 
 GRANT SELECT,UPDATE
