@@ -1,3 +1,4 @@
+from tkinter import INSERT
 import psycopg2
 books = []
 stationers = []
@@ -211,3 +212,32 @@ def agregarEmpleado(psy):
     cursor = psy.cursor()
     cursor.execute(quer)
     psy.commit()
+
+def agregarProducto(con):
+    cursor = con.cursor()
+    quer = """INSERT INTO Products(id,price,price_bought)VALUES({},{},{})""".format(int(input("id: ")),int(input("precio: ")),int(input("precio_compra: ")))
+    cursor.execute(quer)
+    con.commit()
+
+def asignarProducto(con):
+    product = int(input("id: "))
+    tipo = input("tipo: ")
+    if tipo == "estacionario":
+        id = product
+        des = input("des: ")
+        company = input("comp: ")
+        quer = """INSERT INTO Stationers(id,des,company) VALUES({0},'{1}',{2})""".format(id,des,company)
+        cursor = con.cursor()
+        cursor.execute(quer)
+        con.commit()
+    elif tipo == "libro":
+        id = product
+        titulo = input("titulo: ")
+        editorial = int(input("editorial: "))
+        author = int(input("autor: "))
+        pub_date = input("fecha_publicacion: ")
+        genre = input("genero: ")
+        quer = """INSERT INTO Books(id,titulo,editorial,author,pub_date,genre)VALUES({0},{1},{2},{3},{4},{5})""".format(id,titulo,editorial,author,pub_date,genre)
+        cursor = con.cursor()
+        cursor.execute(quer)
+        cursor.commit()
