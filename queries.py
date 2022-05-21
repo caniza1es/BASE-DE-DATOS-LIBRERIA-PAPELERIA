@@ -95,7 +95,7 @@ def msold_stationer(limit = 0):
         return query + " LIMIT {0}".format(limit)
 def msold_book(limit = 0):
     query = """	
-    SELECT B.id,B.title,A.name,M.sold,
+    SELECT B.id as book_id ,B.title as book_title ,A.name as author_name,M.sold as quantity,
   	RANK () OVER ( 
 		ORDER BY M.sold DESC
 	) sold_rank 
