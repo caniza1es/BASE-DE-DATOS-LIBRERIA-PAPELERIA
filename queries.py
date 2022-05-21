@@ -202,7 +202,7 @@ def actualizarInventario(con,administrador,producto,cantidad):
 def agregarEmpleado(psy):
     from datetime import date
     cc = int(input("cc: "))
-    name = int(input("nombre empleado: "))
+    name = input("nombre empleado: ")
     branch = input("sucursal: ")
     occupation = input("ocupacion: ")
     working_since = date.today()
