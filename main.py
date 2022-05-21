@@ -37,13 +37,54 @@ def switch(usr,engine,psy):
             with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
                 display(data) 
             print("1.Generar Factura")
+            print("2.Agregar Cliente")
             a = input(">")
             if a == "exit":
                 break
             elif a == '1':
                 generarFactura(psy,int(input("cliente: ")),int(input("empleado: ")))
-
-
+            elif a == '2':
+                agregarCliente(psy)
+        elif usr == "caja_administrador":
+            data = sqlio.read_sql_query(total_books(), engine)
+            print("--------LIBROS---------")
+            with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
+                display(data) 
+            print("--------ESTACIONARIOS---------")
+            data = sqlio.read_sql_query(total_stationers(), engine)
+            with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
+                display(data) 
+            print("1.Generar Factura")
+            print("2.Agregar Cliente")
+            print("3.Eliminar Factura")
+            print("4.Actualizar inventario")
+            a = input(">")
+            if a == "exit":
+                break
+            elif a == '1':
+                generarFactura(psy,int(input("cliente: ")),int(input("empleado: ")))
+            elif a == '2':
+                agregarCliente(psy)
+            elif a == '3':
+                eliminarFactura(psy,int(input("id factura: ")))
+            elif a == '4':
+                actualizarInventario(psy,int(input("cc administrador: ")),int(input("producto: ")),int(input("nueva cantidad: ")))
+        elif usr == "administrador_sucursal":
+            print("----------SUCURSALES-----------")
+            data = sqlio.read_sql_query("""SELECT * from Branches""", engine)
+            with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
+                display(data) 
+            print("----------EMPLEADOS-----------")
+            data = sqlio.read_sql_query(total_employees(), engine)
+            with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
+                display(data)
+            print("1.Actualizar inventario")
+            print("2.Insertar Producto")
+            a = input(">")
+            if a == "exit":
+                break
+            elif a == '1':
+                actualizarInventario(psy,int(input("cc administrador: ")),int(input("producto: ")),int(input("nueva cantidad: ")))
 
 def main():
     while True:

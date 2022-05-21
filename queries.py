@@ -166,3 +166,36 @@ def generarFactura(con,client,employee):
         cursor.execute(a)
         con.commit()
     return quer,im
+
+def agregarCliente(con):
+    cursor = con.cursor()
+    cc = int(input("cc: "))
+    name = input("nombre: ")
+    email = input("email: ")
+    phone = int(input("telefono: "))
+    query = """INSERT INTO Clients(cc,name,email,phone) VALUES({0},'{1}','{2}',{3})""".format(cc,name,email,phone)
+    cursor.execute(query)
+    con.commit()
+
+def eliminarFactura(con,idfactura):
+    cursor = con.cursor()
+    query = """DELETE FROM ingresos WHERE ingresos.r_id = {0}""".format(idfactura)
+    cursor.execute(query)
+    con.commit()
+
+def actualizarInventario(con,administrador,producto,cantidad):
+    from random import choice
+    br = con.cursor()
+    br.execute("SELECT employees.branch from employees where employees.cc = {0}".format(administrador))
+    br = choice(br.fetchall())
+    br = choice(br)
+    plp = con.cursor()
+    plp.execute(quantity_product(producto) + """AND inventories.branch = '{0}'""".format(br))
+    print("cantidad en inventario: ")
+    mmmm = plp.fetchall()
+    print(mmmm)
+    quer = """UPDATE inventories SET amount = {0} WHERE branch = '{1}' and product = {2};""".format(cantidad,br,producto)
+    cursor = con.cursor()
+    cursor.execute(quer)
+    con.commit()
+    

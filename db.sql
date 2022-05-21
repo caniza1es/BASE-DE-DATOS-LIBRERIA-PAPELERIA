@@ -141,6 +141,10 @@ GRANT SELECT
 ON Stationers,Books,inventories
 TO caja_administrador;
 
+GRANT SELECT,UPDATE
+ON Products,inventories
+TO caja_administrador;
+
 GRANT SELECT
 ON ALL TABLES
 in schema "public"
