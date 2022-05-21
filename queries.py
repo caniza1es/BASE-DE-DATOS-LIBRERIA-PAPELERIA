@@ -199,3 +199,15 @@ def actualizarInventario(con,administrador,producto,cantidad):
     cursor.execute(quer)
     con.commit()
     
+def agregarEmpleado(psy):
+    from datetime import date
+    cc = int(input("cc: "))
+    name = int(input("nombre empleado: "))
+    branch = input("sucursal: ")
+    occupation = input("ocupacion: ")
+    working_since = date.today()
+    email = input("email")
+    quer = """INSERT INTO Employees(cc,name.branch,occupation,working_since,email) VALUES({0},'{1}','{2}','{3}','{4}','{5}')""".format(cc,name,branch,occupation,working_since,email)
+    cursor = psy.cursor()
+    cursor.execute(quer)
+    psy.commit()
