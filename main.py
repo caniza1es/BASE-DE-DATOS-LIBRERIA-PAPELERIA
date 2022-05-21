@@ -5,6 +5,7 @@ import pandas as pd
 import pandas.io.sql as sqlio
 import psycopg2
 
+
 books = []
 stationers = []
 
@@ -84,6 +85,7 @@ def switch(usr,engine,psy):
             print("4.Asignar Producto")
             print("5.Agregar Autor")
             print("6.Agregar Compania")
+            print("7.Consultas avanzadas")
             a = input(">")
             if a == "exit":
                 break
@@ -99,6 +101,10 @@ def switch(usr,engine,psy):
                 agregarAutor(psy)
             elif a == '6':
                 agregarCompania(psy)
+            elif a == '7':
+                dat = sqlio.read_sql_query(msold_book(5),engine)
+                dat['quantity'].plot(kind="bar")
+                display(dat)
 
 def main():
     while True:
