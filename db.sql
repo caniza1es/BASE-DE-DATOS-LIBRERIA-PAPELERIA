@@ -124,7 +124,7 @@ PASSWORD '123'
 CONNECTION LIMIT 1000;
 
 GRANT SELECT,INSERT
-ON receipts,receipts_desc,Clients
+ON receipts,receipts_desc,Clients,ingresos
 TO caja;
 
 GRANT SELECT
@@ -142,7 +142,7 @@ ON receipts,receipts_desc,Clients
 TO caja_administrador;
 
 GRANT SELECT
-ON Stationers,Books,inventories,products,Employees
+ON Stationers,Books,inventories,products,Employees,ingresos
 TO caja_administrador;
 
 GRANT SELECT,UPDATE
