@@ -255,7 +255,7 @@ def agregarCompania(con):
     id = int(input("id: "))
     name = input("nombre compañia: ")
     contacto = int(input("telefono contacto: "))
-    quer = """INSERT INTO Companies(id,name,contacto) VALUES({0},{1},{2})""".format(id,name,contacto)
+    quer = """INSERT INTO Companies(id,name,contacto) VALUES({0},'{1}',{2})""".format(id,name,contacto)
     cursor = con.cursor()
     cursor.execute(quer)
     con.commit()
