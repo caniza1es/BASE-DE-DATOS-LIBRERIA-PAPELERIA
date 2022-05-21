@@ -79,12 +79,14 @@ def switch(usr,engine,psy):
             with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
                 display(data)
             print("1.Actualizar inventario")
-            print("2.Insertar Producto")
+            print("2.Agregar Empleado")
             a = input(">")
             if a == "exit":
                 break
             elif a == '1':
                 actualizarInventario(psy,int(input("cc administrador: ")),int(input("producto: ")),int(input("nueva cantidad: ")))
+            elif a == '2':
+                agregarEmpleado(psy)
 
 def main():
     while True:
