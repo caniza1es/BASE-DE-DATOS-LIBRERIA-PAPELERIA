@@ -128,7 +128,7 @@ ON receipts,receipts_desc,Clients
 TO caja;
 
 GRANT SELECT
-ON Stationers,Books,inventories,Products
+ON Stationers,Books,inventories,Products,Employees
 TO caja;
 
 GRANT UPDATE
@@ -142,7 +142,7 @@ ON receipts,receipts_desc,Clients
 TO caja_administrador;
 
 GRANT SELECT
-ON Stationers,Books,inventories,products
+ON Stationers,Books,inventories,products,Employees
 TO caja_administrador;
 
 GRANT SELECT,UPDATE
