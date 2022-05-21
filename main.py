@@ -26,23 +26,23 @@ def defineProducts(conn):
         stationers.append(i[0])
 
 def switch(usr,engine,psy):
-    if usr == "caja":
-        data = sqlio.read_sql_query(total_books(), engine)
-        print("--------LIBROS---------")
-        with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
-            display(data) 
-        print("--------ESTACIONARIOS---------")
-        data = sqlio.read_sql_query(total_stationers(), engine)
-        with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
-            display(data) 
-        print("1.Generar Factura")
-        while True:
+    while True:
+        if usr == "caja":
+            data = sqlio.read_sql_query(total_books(), engine)
+            print("--------LIBROS---------")
+            with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
+                display(data) 
+            print("--------ESTACIONARIOS---------")
+            data = sqlio.read_sql_query(total_stationers(), engine)
+            with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
+                display(data) 
+            print("1.Generar Factura")
             a = input(">")
             if a == "exit":
                 break
             elif a == '1':
                 generarFactura(psy,int(input("cliente: ")),int(input("empleado: ")))
-    
+
 
 
 def main():

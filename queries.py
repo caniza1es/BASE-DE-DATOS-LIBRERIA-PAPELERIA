@@ -137,12 +137,21 @@ def generarFactura(con,client,employee):
     im = randint(4000,8000)
     a = datetime.now()
     quer = """INSERT INTO receipts(id,time,client,employee) VALUES({0},'{1}',{2},{3});""".format(im,a,client,employee)
+    br = con.cursor()
+    br.execute("SELECT employees.branch from employees where employees.cc = {0}".format(employee))
+    br = choice(br.fetchall())
+    br = choice(br)
     print("factura ",im)
     while True:
         p = input("producto: ")
         if(p=="exit"):
             break
         p = int(p)
+        plp = con.cursor()
+        plp.execute(quantity_product(p) + """AND inventories.branch = '{0}'""".format(br))
+        print("cantidad en inventario: ")
+        mmmm = plp.fetchall()
+        print(mmmm)
         am = int(input("cantidad: "))
         quer += """INSERT INTO receipts_desc(id,product,amount) VALUES({0},{1},{2});""".format(im,p,am)
     cursor = con.cursor()
@@ -150,10 +159,10 @@ def generarFactura(con,client,employee):
     con.commit()
     cursor.execute("""select M.idd from ({0}) as M""".format(receipt_detail(im)))
     m = cursor.fetchall()
-    print(m)
     for i in m:
         i = choice(i)
         print(type(i))
         a = """CALL insert_remove({0});""".format(i)
         cursor.execute(a)
+        con.commit()
     return quer,im
