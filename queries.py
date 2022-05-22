@@ -291,3 +291,35 @@ def historialProducto(year,product):
         GROUP BY P.id,I.month
         ORDER BY total_sold DESC
         """.format(product,year)
+
+def ingresosSucursalYR():
+    return """
+    SELECT B.name as branch, SUM(I.sold_price) as total_in, I.year as year
+    from branches as B,ingresos as I,receipts as R,employees as E
+    where I.r_id = R.id
+    and R.employee = E.cc
+    and E.branch = B.name
+    GROUP BY B.name,I.year
+    """
+def ingresosSucursalMT(year=0):
+    if year == 0:
+        from datetime import date
+        year = date.today().year
+        return """
+        SELECT B.name as branch, SUM(I.sold_price) as total_in, I.month as month
+        from branches as B,ingresos as I,receipts as R,employees as E
+        where I.r_id = R.id
+        and R.employee = E.cc
+        and E.branch = B.name
+        and I.year = {0}
+        GROUP BY B.name,I.month
+        """.format(year)
+    return """
+    SELECT B.name as branch, SUM(I.sold_price) as total_in, I.month as month
+    from branches as B,ingresos as I,receipts as R,employees as E
+    where I.r_id = R.id
+    and R.employee = E.cc
+    and E.branch = B.name
+    and I.year = {0}
+    GROUP BY B.name,I.month
+    """.format(year)
