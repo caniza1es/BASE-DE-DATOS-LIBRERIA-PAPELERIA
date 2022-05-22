@@ -355,3 +355,23 @@ def analisisCat(year=0,month=0):
     and I.month={1}
     GROUP BY B.genre
     """.format(year,month)
+
+def hisBranch(br=0):
+    if br == 0:
+        return """
+        SELECT distinct E.branch as branch, SUM(I.sold_price) as inc,I.year as year
+        from employees as E, ingresos as I,receipts as R
+        where R.employee = E.cc
+        and I.r_id = R.id
+        GROUP BY E.branch,I.year
+        ORDER BY I.year ASC
+        """
+    return"""
+    SELECT distinct E.branch as branch, SUM(I.sold_price) as inc,I.year as year
+    from employees as E, ingresos as I,receipts as R
+    where R.employee = E.cc
+    and E.branch = '{0}'
+    and I.r_id = R.id
+    GROUP BY E.branch,I.year
+    ORDER BY I.year ASC
+    """.format(br)
