@@ -260,11 +260,25 @@ def agregarCompania(con):
     cursor.execute(quer)
     con.commit()
 
-def ingresosProducto():
+def ingresosProducto(year=0):
+    if year == 0:
+        return """
+            SELECT P.id as product,SUM(I.sold_price) as total_sold,I.year as year
+            from products as P,ingresos as I,receipts_desc as rd
+            where rd.product = P.id
+            and I.rd_id = rd.idd
+            GROUP BY P.id,I.year
+            ORDER BY total_sold DESC
+            LIMIT 100"""
     return """
-    SELECT P.id,SUM(I.sold_price),I.year
+    SELECT P.id as product,SUM(I.sold_price) as total_sold,I.year as year
     from products as P,ingresos as I,receipts_desc as rd
     where rd.product = P.id
     and I.rd_id = rd.idd
+    and I.year = {0}
     GROUP BY P.id,I.year
-    """
+    ORDER BY total_sold DESC
+    LIMIT 100""".format(year)
+
+def historialProducto(producto):
+    pass
