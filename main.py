@@ -102,8 +102,8 @@ def switch(usr,engine,psy):
             elif a == '6':
                 agregarCompania(psy)
             elif a == '7':
-                df = sqlio.read_sql_query(msold_book(5),engine)
-                df.to_csv('consulta_1.csv', encoding='utf-8')
+                df = sqlio.read_sql_query(ingresosProducto(),engine)
+                df.to_csv('ingresosProducto.csv', encoding='utf-8')
                 #consulta_1['quantity'].plot(kind="bar")
                 filepath = 'consultas.html'
                 import os
