@@ -259,3 +259,12 @@ def agregarCompania(con):
     cursor = con.cursor()
     cursor.execute(quer)
     con.commit()
+
+def ingresosProducto():
+    return """
+    SELECT P.id,SUM(I.sold_price),I.year
+    from products as P,ingresos as I,receipts_desc as rd
+    where rd.product = P.id
+    and I.rd_id = rd.idd
+    GROUP BY P.id,I.year
+    """
