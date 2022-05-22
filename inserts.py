@@ -169,14 +169,14 @@ for i in books:
 	m.write("INSERT INTO Books(ID,title,editorial,author,pub_date,genre)VALUES({0},'{1}',{2},{3},'{4}','{5}');\n".format(i,title,editorial,auto,pub_date,genre))
 for sucursal in Branches:
 	for id in pducts:
-		amount = random.randint(0,500)
+		amount = random.randint(1000,2000)
 		m.write("INSERT INTO Inventories(branch,product,amount)VALUES('{0}',{1},{2});\n".format(sucursal,id,amount))
 		inventories.append((sucursal,id))
 
 for i in range(20):
 	newEmployee()
 
-for i in range(500):
+for i in range(200):
 	name = rN()
 	while True:
 		ccc = rCC()
@@ -199,6 +199,7 @@ for i in cli:
 		empl = random.choice(emplyees)
 		m.write("INSERT INTO Receipts(ID,TIME,client,employee)VALUES({0},'{1}',{2},{3});\n".format(id,time,client,empl))
 
+count = 1
 for i in receipts:
 	used = []
 	for n in range(random.randint(1,6)):
@@ -209,5 +210,7 @@ for i in receipts:
 		used.append(prod)
 		amount = random.randint(1,3)
 		m.write("INSERT INTO Receipts_desc(ID,product,amount)VALUES({0},{1},{2});\n".format(i,prod,amount))
+		m.write("CALL insert_remove({0});\n".format(count))
+		count+=1
 
 print("Completado!")
