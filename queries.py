@@ -280,5 +280,14 @@ def ingresosProducto(year=0):
     ORDER BY total_sold DESC
     LIMIT 100""".format(year)
 
-def historialProducto(producto):
-    pass
+def historialProducto(year,product):
+    return """
+        SELECT P.id as product,SUM(I.sold_price) as total_sold,I.month as month
+        from products as P,ingresos as I,receipts_desc as rd
+        where rd.product = P.id
+        and I.rd_id = rd.idd
+        and P.id = {0}
+        and I.year = {1}
+        GROUP BY P.id,I.month
+        ORDER BY total_sold DESC
+        """.format(product,year)
