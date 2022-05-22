@@ -105,9 +105,15 @@ def switch(usr,engine,psy):
                 df = sqlio.read_sql_query(ingresosProducto(),engine)
                 df.to_csv('ingresosProducto.csv', encoding='utf-8')
                 #consulta_1['quantity'].plot(kind="bar")
-                filepath = 'consultas.html'
+                import subprocess
+                import webbrowser
+                subprocess.Popen(['python', '-m', 'SimpleHTTPServer', '8000'])
+                webbrowser.register('chrome',None,webbrowser.BackgroundBrowser("C://Program Files//Google//Chrome//Application//chrome.exe"))
+                webbrowser.get('chrome')
+                h = webbrowser.get('chrome')
+                h.open_new_tab('http://localhost:8000/')
                 import os
-                os.startfile(filepath)
+                os.system('python -m http.server')
 
 def main():
     while True:
