@@ -340,3 +340,18 @@ def comEmpleado(branch,month=0,year=0):
     and I. month = {2}
     GROUP BY E.cc""".format(branch,year,month)
     
+def analisisCat(year=0,month=0):
+    from datetime import date
+    if year == 0:
+        year = date.today().year
+    if month == 0:
+        month = date.today().month
+    return """
+    SELECT DISTINCT B.genre as categoria, COUNT(I.r_id) as total
+    from books as B, ingresos as I, receipts_desc as R
+    where R.id = I.r_id
+    and R.product = B.id
+    and I.year={0}
+    and I.month={1}
+    GROUP BY B.genre
+    """.format(year,month)
