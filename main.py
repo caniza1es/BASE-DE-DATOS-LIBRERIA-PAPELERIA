@@ -103,17 +103,9 @@ def switch(usr,engine,psy):
                 agregarCompania(psy)
             elif a == '7':
                 df = sqlio.read_sql_query(ingresosProducto(),engine)
-                df.to_csv('ingresosProducto.csv', encoding='utf-8')
-                #consulta_1['quantity'].plot(kind="bar")
-                import subprocess
-                import webbrowser
-                subprocess.Popen(['python', '-m', 'SimpleHTTPServer', '8000'])
-                webbrowser.register('chrome',None,webbrowser.BackgroundBrowser("C://Program Files//Google//Chrome//Application//chrome.exe"))
-                webbrowser.get('chrome')
-                h = webbrowser.get('chrome')
-                h.open_new_tab('http://localhost:8000/')
-                import os
-                os.system('python -m http.server')
+                import plotly.express as px
+                fig = px.scatter_3d(df,x='product',y='total_sold',z='year',color='product')
+                fig.show()
 
 def main():
     while True:
