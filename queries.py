@@ -323,3 +323,20 @@ def ingresosSucursalMT(year=0):
     and I.year = {0}
     GROUP BY B.name,I.month
     """.format(year)
+
+def comEmpleado(branch,month=0,year=0):
+    from datetime import date
+    if year == 0:
+        year = date.today().year
+    if month == 0:
+        month = date.today().month
+    return """
+    SELECT E.name as employee, COUNT(R.id) as regis
+    from employees as E, receipts as R, ingresos as I
+    WHERE I.r_id = R.id
+    and R.employee = E.cc
+    and E.branch = '{0}'
+    and I.year = {1}
+    and I. month = {2}
+    GROUP BY E.cc""".format(branch,year,month)
+    
