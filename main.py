@@ -101,11 +101,7 @@ def switch(usr,engine,psy):
                 agregarAutor(psy)
             elif a == '6':
                 agregarCompania(psy)
-            elif a == '7':
-                df = sqlio.read_sql_query(ingresosProducto(),engine)
-                import plotly.express as px
-                fig = px.scatter_3d(df,x='product',y='total_sold',z='year',color='product')
-                fig.show()
+
 
 def main():
     while True:
