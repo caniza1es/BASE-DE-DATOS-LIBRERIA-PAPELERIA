@@ -85,7 +85,6 @@ def switch(usr,engine,psy):
             print("4.Asignar Producto")
             print("5.Agregar Autor")
             print("6.Agregar Compania")
-            print("7.Consultas avanzadas")
             a = input(">")
             if a == "exit":
                 break
