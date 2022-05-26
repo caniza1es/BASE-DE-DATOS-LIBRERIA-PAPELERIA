@@ -48,6 +48,36 @@ des VARCHAR(40),
 company INTEGER REFERENCES Companies(id)
 );
 
+CREATE ROLE caja
+LOGIN
+PASSWORD '123'
+CONNECTION LIMIT 1000;
+
+CREATE ROLE caja_administrador
+LOGIN
+PASSWORD '123'
+CONNECTION LIMIT 1000;
+
+CREATE ROLE administrador_sucursal
+LOGIN
+PASSWORD '123'
+CONNECTION LIMIT 1000;
+
+GRANT ALL
+ON ALL TABLES
+IN SCHEMA "public"
+TO caja;
+
+GRANT ALL
+ON ALL TABLES
+IN SCHEMA "public"
+TO caja_administrador;
+
+GRANT ALL
+ON ALL TABLES
+IN SCHEMA "public"
+TO administrador_sucursal;
+
 CREATE TABLE Books(
 id integer REFERENCES Products(ID),
 title VARCHAR(50) NOT NULL,
@@ -108,54 +138,6 @@ WHERE product = (SELECT receipts_desc.product FROM receipts_desc WHERE receipts_
 END;
 $$;
 
-CREATE ROLE caja
-LOGIN
-PASSWORD '123'
-CONNECTION LIMIT 1000;
 
-CREATE ROLE caja_administrador
-LOGIN
-PASSWORD '123'
-CONNECTION LIMIT 1000;
-
-CREATE ROLE administrador_sucursal
-LOGIN
-PASSWORD '123'
-CONNECTION LIMIT 1000;
-
-GRANT SELECT,INSERT
-ON receipts,receipts_desc,Clients,ingresos
-TO caja;
-
-GRANT SELECT
-ON Stationers,Books,inventories,Products,Employees
-TO caja;
-
-GRANT UPDATE
-ON inventories
-TO caja;
-
-GRANT ALL ON PROCEDURE insert_remove TO caja;
-
-GRANT SELECT,INSERT,DELETE
-ON receipts,receipts_desc,Clients
-TO caja_administrador;
-
-GRANT SELECT
-ON Stationers,Books,inventories,products,Employees,ingresos
-TO caja_administrador;
-
-GRANT SELECT,UPDATE
-ON Products,inventories
-TO caja_administrador;
-
-GRANT SELECT
-ON ALL TABLES
-in schema "public"
-TO administrador_sucursal;
-
-GRANT INSERT,UPDATE,DELETE
-ON Products,inventories,Books,Stationers
-TO administrador_sucursal;
 
 
