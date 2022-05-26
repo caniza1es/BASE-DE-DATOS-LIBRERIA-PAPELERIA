@@ -29,4 +29,4 @@ podremos terminar la relación de tal manera que sea posible analizar la
 interacción entre salida de inventario, entrada de ingreso, eficiencia de
 empleados.
 
-![image info](./DISEÑO_RELACIONAL.png)
+![image](./DISEÑO_RELACIONAL.png)
